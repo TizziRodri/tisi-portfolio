@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tisi — Editor de Video</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080808;
+      --surface: #111111;
+      --border: #1e1e1e;
+      --text: #e8e4dc;
+      --muted: #5a5750;
+      --accent: #c8ff00;
+      --accent2: #ff6b35;
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    /* CURSOR */
+    .cursor {
+      width: 10px; height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(200,255,0,0.4);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.35s cubic-bezier(.25,.46,.45,.94), width 0.3s, height 0.3s;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 24px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.95) 0%, transparent 100%);
+      backdrop-filter: blur(2px);
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+      color: var(--white);
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* HAMBURGER */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      padding: 4px;
+      cursor: pointer;
+      z-index: 102;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 24px; height: 1.5px;
+      background: var(--text);
+      transition: all 0.3s;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* MOBILE MENU OVERLAY */
+    .nav-mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(8,8,8,0.98);
+      z-index: 101;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+    .nav-mobile-menu.open { display: flex; }
+    .nav-mobile-menu a {
+      color: var(--text);
+      text-decoration: none;
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      transition: color 0.2s;
+    }
+    .nav-mobile-menu a:hover { color: var(--accent); }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(200,255,0,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,255,0,0.025) 1px, transparent 1px);
+      background-size: 80px 80px;
+      pointer-events: none;
+    }
+    .hero-glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(200,255,0,0.06) 0%, transparent 70%);
+      top: 10%; right: -10%;
+      pointer-events: none;
+    }
+    .hero-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-tag::before {
+      content: '';
+      display: block;
+      width: 32px; height: 1px;
+      background: var(--accent);
+    }
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(3.5rem, 8vw, 8rem);
+      line-height: 0.92;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 32px;
+    }
+    .hero-title .accent-word { color: var(--accent); }
+    .hero-title .outline-word {
+      -webkit-text-stroke: 1.5px rgba(255,255,255,0.25);
+      color: transparent;
+    }
+    .hero-desc {
+      max-width: 480px;
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+    .hero-desc strong { color: var(--text); font-weight: 400; }
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      padding: 14px 32px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      display: inline-block;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 4px 4px 0 rgba(200,255,0,0.3);
+    }
+    .btn-ghost {
+      color: var(--text);
+      padding: 14px 32px;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--muted); color: var(--white); }
+    .hero-stats {
+      position: absolute;
+      bottom: 48px; right: 48px;
+      display: flex;
+      gap: 48px;
+    }
+    .stat-item { text-align: right; }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--white);
+      line-height: 1;
+    }
+    .stat-num span { color: var(--accent); }
+    .stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .scroll-indicator {
+      position: absolute;
+      bottom: 48px; left: 48px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 40px; height: 1px;
+      background: var(--muted);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: var(--accent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0% { left: -100%; }
+      50% { left: 0; }
+      100% { left: 100%; }
+    }
+
+    /* SECTION COMMONS */
+    section { padding: 120px 48px; }
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      max-width: 40px;
+      height: 1px;
+      background: var(--accent);
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 64px;
+    }
+
+    /* SHORTS */
+    #shorts { background: var(--bg); }
+    .shorts-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .short-card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      aspect-ratio: 9/16;
+      cursor: none;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .short-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+    .short-card .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 16px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .short-card:hover .card-overlay { opacity: 1; }
+    .card-play-btn {
+      width: 48px; height: 48px;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      transition: transform 0.2s;
+    }
+    .card-play-btn svg { width: 18px; fill: #000; }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+    .card-link {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      text-decoration: none;
+    }
+    .short-thumb {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .short-card:hover .short-thumb { transform: scale(1.05); }
+
+    /* ============================================================
+       VIDEOS NORMALES — nueva sección
+    ============================================================ */
+    #videos-normales { background: var(--bg); }
+
+    .vnormal-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    /* Columna izquierda: copy */
+    .vnormal-copy {}
+
+    .vnormal-statement {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      color: var(--white);
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      margin-bottom: 28px;
+    }
+    .vnormal-statement .hl { color: var(--accent); }
+
+    .vnormal-desc {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 36px;
+    }
+    .vnormal-desc strong { color: var(--text); font-weight: 400; }
+    .vnormal-desc em { color: var(--accent); font-style: normal; }
+
+    .vnormal-pillars {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .pillar {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .pillar:first-child { border-top: 1px solid var(--border); }
+    .pillar-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      padding-top: 2px;
+      flex-shrink: 0;
+      width: 24px;
+    }
+    .pillar-body {}
+    .pillar-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .pillar-text {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* Columna derecha: video */
+    .vnormal-video-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .vnormal-video {
+      position: relative;
+      aspect-ratio: 16/9;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .vnormal-video:hover { border-color: rgba(200,255,0,0.3); }
+    .vnormal-video iframe { width: 100%; height: 100%; border: none; display: block; }
+    .vnormal-video .video-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.5);
+      transition: opacity 0.3s;
+      cursor: pointer;
+    }
+
+    .vnormal-caption {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .vnormal-caption-badge {
+      padding: 5px 12px;
+      border: 1px solid var(--border);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .vnormal-caption-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .vnormal-caption-text {
+      font-size: 0.78rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* STREAM */
+    #streams { background: var(--surface); }
+    .stream-feature {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .stream-video {
+      position: relative;
+      aspect-ratio: 16/9;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .stream-video iframe { width: 100%; height: 100%; border: none; }
+    .stream-video .video-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.5);
+      transition: opacity 0.3s;
+    }
+    .play-big {
+      width: 72px; height: 72px;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .play-big svg { width: 28px; fill: #000; margin-left: 4px; }
+    .stream-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .stream-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+    .stream-desc {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+    .stream-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      padding: 6px 14px;
+      background: rgba(200,255,0,0.06);
+      border: 1px solid rgba(200,255,0,0.15);
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* CONTACT */
+    #contacto { background: var(--bg); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .about-text {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+    .about-text strong { color: var(--text); font-weight: 400; }
+    .about-text em { color: var(--accent); font-style: normal; }
+    .pricing-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .pricing-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: var(--accent);
+    }
+    .pricing-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .pricing-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+    .pricing-items {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+    .pricing-items li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+    .pricing-items li::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .contact-methods { display: flex; flex-direction: column; gap: 12px; }
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .contact-link:hover {
+      border-color: var(--accent);
+      background: rgba(200,255,0,0.04);
+      color: var(--accent);
+    }
+    .contact-link svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
+    .contact-link-text { flex: 1; }
+    .contact-link-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+    .contact-arrow { font-size: 0.8rem; opacity: 0.4; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--white); }
+    .footer-logo span { color: var(--accent); }
+    .footer-copy { font-size: 0.75rem; color: var(--muted); }
+
+    /* ANIMATIONS */
+    .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* DIVIDER */
+    .divider { width: 100%; height: 1px; background: var(--border); margin: 0; }
+
+    /* ============================================================
+       RESPONSIVE MOBILE
+    ============================================================ */
+    @media (max-width: 1024px) {
+      .shorts-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
+      .stream-feature { gap: 40px; }
+      .vnormal-layout { gap: 40px; }
+    }
+
+    @media (max-width: 768px) {
+      body { cursor: auto; }
+      .cursor, .cursor-ring { display: none; }
+
+      nav { padding: 18px 24px; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+
+      #hero {
+        padding: 100px 24px 140px;
+        min-height: 100svh;
+      }
+      .hero-title { font-size: clamp(2.6rem, 11vw, 4.5rem); }
+      .hero-desc { font-size: 0.9rem; max-width: 100%; }
+      .hero-glow { width: 280px; height: 280px; right: -15%; }
+      .hero-stats {
+        position: static;
+        margin-top: 40px;
+        justify-content: flex-start;
+        gap: 32px;
+      }
+      .stat-item { text-align: left; }
+      .scroll-indicator { display: none; }
+
+      section { padding: 64px 24px; }
+      .section-title { margin-bottom: 32px; font-size: clamp(1.6rem, 6vw, 2.4rem); }
+
+      .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+      .vnormal-layout { grid-template-columns: 1fr; gap: 28px; }
+      .vnormal-statement { font-size: clamp(1.3rem, 5vw, 1.9rem); }
+
+      .stream-feature { grid-template-columns: 1fr; gap: 28px; }
+      .stream-title { font-size: 1.4rem; }
+      .stream-desc { font-size: 0.85rem; }
+
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .about-text { font-size: 0.95rem; margin-bottom: 28px; }
+      .pricing-card { padding: 24px 20px; }
+
+      footer {
+        padding: 24px;
+        flex-direction: column;
+        gap: 6px;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      nav { padding: 16px 20px; }
+      #hero { padding: 88px 20px 120px; }
+      .hero-title { font-size: clamp(2.2rem, 12vw, 3.2rem); }
+      .hero-cta { flex-direction: column; align-items: stretch; }
+      .btn-primary, .btn-ghost { text-align: center; }
+      section { padding: 56px 20px; }
+      .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .card-play-btn { width: 36px; height: 36px; }
+      .stream-title { font-size: 1.2rem; }
+      .contact-link { padding: 12px 14px; font-size: 0.8rem; }
+      .pricing-card { padding: 20px 16px; }
+      .tag { font-size: 0.65rem; padding: 5px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Tisi<span>.</span></div>
+    <ul class="nav-links">
+      <li><a href="#shorts">Shorts</a></li>
+      <li><a href="#videos-normales">Videos</a></li>
+      <li><a href="#streams">Streams</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <button class="nav-hamburger" id="hamburger" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="nav-mobile-menu" id="mobileMenu">
+    <a href="#shorts" class="mobile-link">Shorts</a>
+    <a href="#videos-normales" class="mobile-link">Videos</a>
+    <a href="#streams" class="mobile-link">Streams</a>
+    <a href="#contacto" class="mobile-link">Contacto</a>
+  </div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-grid-lines"></div>
+    <div class="hero-glow"></div>
+
+    <div class="hero-tag">Editor de Video · Redes Sociales</div>
+
+    <h1 class="hero-title">
+      Tu contenido<br>
+      <span class="accent-word">elevado</span><br>
+      <span class="outline-word">al máximo.</span>
+    </h1>
+
+    <p class="hero-desc">
+      Soy <strong>Tisi</strong>, editor profesional especializado en contenido para redes sociales.
+      <strong>TikTok, Shorts y Reels</strong> con identidad visual que engancha desde el primer segundo.
+      Tiempos de entrega <em>ultra competitivos</em> sin sacrificar calidad.
+    </p>
+
+    <div class="hero-cta">
+      <a href="#contacto" class="btn-primary">Hablemos →</a>
+      <a href="#shorts" class="btn-ghost">Ver trabajos</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">24<span>h</span></div>
+        <div class="stat-label">Entrega mínima</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100<span>%</span></div>
+        <div class="stat-label">Dedicación</div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      Scroll
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SHORTS / TIKTOKS / REELS -->
+  <section id="shorts">
+    <div class="section-label">Portafolio</div>
+    <h2 class="section-title fade-up">TikToks / Shorts / Reels</h2>
+    <div class="shorts-grid fade-up" id="shortsGrid"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       VIDEOS NORMALES — nueva sección
+  ============================================================ -->
+  <section id="videos-normales">
+    <div class="section-label">Video Normal</div>
+    <h2 class="section-title fade-up">Videos que no paran.</h2>
+
+    <div class="vnormal-layout fade-up">
+
+      <!-- Copy -->
+      <div class="vnormal-copy">
+        <p class="vnormal-statement">
+          No es magia.<br>
+          Es edición que <span class="hl">no te deja salir.</span>
+        </p>
+
+        <p class="vnormal-desc">
+          Hay videos que la gente cierra a los 30 segundos. Y hay videos que ven enteros sin darse cuenta.
+          La diferencia no es el tema — es <strong>cómo está editado</strong>.<br><br>
+          Trabajo cada corte para que el ritmo nunca decaiga. Que siempre haya algo pasando.
+          Que el espectador no tenga un solo momento de aburrimiento donde decida irse.
+          <em>Retención alta = algoritmo feliz = más plata para vos.</em>
+        </p>
+
+        <div class="vnormal-pillars">
+          <div class="pillar">
+            <div class="pillar-num">01</div>
+            <div class="pillar-body">
+              <div class="pillar-title">Ritmo que engancha</div>
+              <div class="pillar-text">Cada corte tiene un propósito. El silencio dura lo justo. Las transiciones fluyen. Nada sobra, nada falta.</div>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-num">02</div>
+            <div class="pillar-body">
+              <div class="pillar-title">Efectos que amplifican</div>
+              <div class="pillar-text">Zooms, SFX — no como adorno sino como herramienta para darle peso a cada momento.</div>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-num">03</div>
+            <div class="pillar-body">
+              <div class="pillar-title">Retención real</div>
+              <div class="pillar-text">El algoritmo premia a los que retienen. Edito pensando en que la gente llegue al final — siempre.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video -->
+      <div class="vnormal-video-wrap">
+        <div class="vnormal-video">
+          <iframe
+            src="https://www.youtube.com/embed/2uGtWsSX_XQ?rel=0&modestbranding=1"
+            title="Ejemplo Video Normal"
+            allowfullscreen>
+            https://youtu.be/
+          </iframe>
+          <div class="video-overlay">
+            <div class="play-big">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="vnormal-caption">
+          <div class="vnormal-caption-badge">Ejemplo</div>
+          <div class="vnormal-caption-line"></div>
+          <div class="vnormal-caption-text">Video Normal editado</div>
+        </div>
+        <div class="stream-tags">
+          <span class="tag">Retención Alta</span>
+          <span class="tag">Ritmo Preciso</span>
+          <span class="tag">Zooms</span>
+          <span class="tag">Efectos de sonido</span>
+          <span class="tag">Subtítulos</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- LONG VIDEO / STREAMS -->
+  <section id="streams">
+    <div class="section-label">Video Largo</div>
+    <h2 class="section-title fade-up">Resúmenes de Streams</h2>
+
+    <div class="stream-feature fade-up">
+      <div class="stream-video">
+        <iframe
+          src="https://www.youtube.com/embed/9Lt808zHE08?rel=0&modestbranding=1"
+          title="Resumen Stream"
+          allowfullscreen>
+        </iframe>
+        <div class="video-overlay">
+          <div class="play-big">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="stream-info">
+        <div class="stream-badge">Resumen Completo · 9hs → 1hs</div>
+        <h3 class="stream-title">De 9 horas de stream a 1 hora de video</h3>
+        <p class="stream-desc">
+          Esto no es un compilado de momentos sueltos. Es un <strong style="color:var(--text)">resumen narrativo completo</strong>: tomo 9 horas de stream y las convierto en 1 hora de video que se ve de corrido, con principio, desarrollo y cierre.<br><br>
+          Cada corte tiene sentido. El ritmo no decae. Y encima va cargado de zooms, efectos de sonido y subtítulos que le dan vida a cada momento.
+        </p>
+        <div class="stream-tags">
+          <span class="tag">Resumen Narrativo</span>
+          <span class="tag">Zooms & SFX</span>
+          <span class="tag">Subtítulos</span>
+          <span class="tag">9hs → 1hs</span>
+          <span class="tag">Sony Vegas</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CONTACT -->
+  <section id="contacto">
+    <div class="section-label">Contacto</div>
+    <h2 class="section-title fade-up">Trabajemos juntos</h2>
+
+    <div class="contact-grid fade-up">
+      <div>
+        <p class="about-text">
+          No manejo precios fijos. Cada proyecto es diferente, y prefiero que el precio
+          <em>se adapte a lo que vos necesitás</em>, no al revés.<br><br>
+          Ya sea un video único, un pack mensual, o algo completamente personalizado — 
+          <strong>lo hablamos y llegamos a algo que funcione para los dos.</strong>
+          <br><br>
+          Lo que sí garantizo: <em>tiempos de entrega rápidos</em>, comunicación fluida, y un resultado
+          que realmente le sirva a tu canal o marca.
+        </p>
+        <div class="pricing-card">
+          <div class="pricing-title">¿Qué ofrezco?</div>
+          <p class="pricing-sub">El precio varía según el proyecto, la cantidad y la frecuencia. Escribime y te hago un presupuesto a medida.</p>
+          <ul class="pricing-items">
+            <li>TikToks, Shorts y Reels editados profesionalmente</li>
+            <li>Videos normales con retención alta y ritmo preciso</li>
+            <li>Resúmenes y highlights de streams</li>
+            <li>Edición con efectos, transiciones y color grading</li>
+            <li>Entregas en 24–72 hs según el formato</li>
+            <li>Revisiones incluidas hasta que quede perfecto</li>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <div class="contact-methods">
+          <a href="https://instagram.com/tizzii.rodriguez" target="_blank" class="contact-link">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            <div class="contact-link-text">
+              <div class="contact-link-label">Instagram</div>
+              <div>@tizzii.rodriguez</div>
+            </div>
+            <span class="contact-arrow">→</span>
+          </a>
+
+          <a href="https://x.com/jugadorista" target="_blank" class="contact-link">
+            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            <div class="contact-link-text">
+              <div class="contact-link-label">Twitter / X</div>
+              <div>@jugadorista</div>
+            </div>
+            <span class="contact-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Tisi<span>.</span></div>
+    <div class="footer-copy">© 2026 Tisi — Editor de Video para Redes Sociales</div>
+  </footer>
+
+  <script>
+    // ============================================================
+    // SHORTS — links exactos
+    // ============================================================
+    const shorts = [
+      { url: 'https://youtube.com/shorts/AaBCVAlUIRM', title: 'Short #1' },
+      { url: 'https://youtube.com/shorts/7GjTjtXQt-4', title: 'Short #2' },
+      { url: 'https://youtube.com/shorts/YQXJ8YvEOPY', title: 'Short #3' },
+      { url: 'https://youtube.com/shorts/FymLVpDnzsY', title: 'Short #4' },
+      { url: 'https://youtube.com/shorts/TRXWarZzCiE', title: 'Short #5' }
+    ];
+
+    function extractYTId(url) {
+      let m = url.match(/\/shorts\/([a-zA-Z0-9_-]{11})/);
+      if (m) return m[1];
+      m = url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+      if (m) return m[1];
+      m = url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+      if (m) return m[1];
+      return null;
+    }
+
+    const grid = document.getElementById('shortsGrid');
+    shorts.forEach(({ url, title }) => {
+      const id = extractYTId(url);
+      const thumb = id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : null;
+      const card = document.createElement('div');
+      card.className = 'short-card';
+      card.innerHTML = `
+        ${thumb
+          ? `<img class="short-thumb" src="${thumb}" alt="${title}" loading="lazy">`
+          : `<div style="width:100%;height:100%;background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.75rem;">Sin preview</div>`
+        }
+        <div class="card-overlay">
+          <div class="card-play-btn">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div class="card-title">${title}</div>
+        </div>
+        <a href="${url}" target="_blank" class="card-link" aria-label="${title}"></a>
+      `;
+      grid.appendChild(card);
+    });
+
+    // HAMBURGER MENU
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+      document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+    });
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // CURSOR (solo desktop con mouse)
+    if (window.matchMedia('(pointer: fine)').matches) {
+      const cursor = document.getElementById('cursor');
+      const ring = document.getElementById('cursorRing');
+      let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX; mouseY = e.clientY;
+        cursor.style.transform = `translate(${mouseX - 5}px, ${mouseY - 5}px)`;
+      });
+      function animateRing() {
+        ringX += (mouseX - ringX) * 0.12;
+        ringY += (mouseY - ringY) * 0.12;
+        ring.style.transform = `translate(${ringX - 18}px, ${ringY - 18}px)`;
+        requestAnimationFrame(animateRing);
+      }
+      animateRing();
+      document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseenter', () => { ring.style.width = '60px'; ring.style.height = '60px'; });
+        el.addEventListener('mouseleave', () => { ring.style.width = '36px'; ring.style.height = '36px'; });
+      });
+    }
+
+    // FADE UP ON SCROLL
+    const fadeEls = document.querySelectorAll('.fade-up');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    fadeEls.forEach(el => observer.observe(el));
+
+    // VIDEO OVERLAY click to remove
+    document.querySelectorAll('.video-overlay').forEach(overlay => {
+      overlay.addEventListener('click', () => { overlay.remove(); });
+    });
+  </script>
+</body>
+</html>
