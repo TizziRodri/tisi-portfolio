@@ -135,7 +135,9 @@
     }
     .nav-mobile-menu a:hover { color: var(--accent); }
 
-    /* HERO */
+    /* ============================================================
+       HERO — two-column layout with intro video
+    ============================================================ */
     #hero {
       min-height: 100vh;
       display: flex;
@@ -161,6 +163,19 @@
       top: 10%; right: -10%;
       pointer-events: none;
     }
+
+    /* inner layout */
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      width: 100%;
+      max-width: 1400px;
+    }
+
+    .hero-left {}
+
     .hero-tag {
       font-size: 0.75rem;
       letter-spacing: 0.18em;
@@ -180,7 +195,7 @@
     .hero-title {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: clamp(3.5rem, 8vw, 8rem);
+      font-size: clamp(3rem, 5.5vw, 6.5rem);
       line-height: 0.92;
       letter-spacing: -0.03em;
       color: var(--white);
@@ -196,7 +211,7 @@
       font-size: 1rem;
       color: var(--muted);
       line-height: 1.7;
-      margin-bottom: 48px;
+      margin-bottom: 40px;
     }
     .hero-desc strong { color: var(--text); font-weight: 400; }
     .hero-cta {
@@ -204,6 +219,7 @@
       gap: 16px;
       align-items: center;
       flex-wrap: wrap;
+      margin-bottom: 48px;
     }
     .btn-primary {
       background: var(--accent);
@@ -231,13 +247,12 @@
       transition: border-color 0.2s, color 0.2s;
     }
     .btn-ghost:hover { border-color: var(--muted); color: var(--white); }
+
     .hero-stats {
-      position: absolute;
-      bottom: 48px; right: 48px;
       display: flex;
-      gap: 48px;
+      gap: 40px;
     }
-    .stat-item { text-align: right; }
+    .stat-item { text-align: left; }
     .stat-num {
       font-family: 'Syne', sans-serif;
       font-weight: 700;
@@ -253,9 +268,91 @@
       color: var(--muted);
       margin-top: 4px;
     }
+
+    /* Hero video column */
+    .hero-right {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .hero-video-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-video-label::before {
+      content: '';
+      display: block;
+      width: 20px; height: 1px;
+      background: var(--muted);
+    }
+
+    .hero-video-frame {
+      position: relative;
+      aspect-ratio: 16/9;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .hero-video-frame:hover {
+      border-color: rgba(200,255,0,0.35);
+    }
+    /* accent corner lines */
+    .hero-video-frame::before,
+    .hero-video-frame::after {
+      content: '';
+      position: absolute;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .hero-video-frame::before {
+      top: -1px; left: -1px;
+      width: 28px; height: 28px;
+      border-top: 2px solid var(--accent);
+      border-left: 2px solid var(--accent);
+    }
+    .hero-video-frame::after {
+      bottom: -1px; right: -1px;
+      width: 28px; height: 28px;
+      border-bottom: 2px solid var(--accent);
+      border-right: 2px solid var(--accent);
+    }
+    .hero-video-frame iframe {
+      width: 100%; height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .hero-video-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hero-video-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .hero-video-badge {
+      padding: 4px 10px;
+      background: rgba(200,255,0,0.08);
+      border: 1px solid rgba(200,255,0,0.2);
+      color: var(--accent);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
     .scroll-indicator {
       position: absolute;
-      bottom: 48px; left: 48px;
+      bottom: 40px; left: 48px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -345,16 +442,6 @@
       transition: opacity 0.3s;
     }
     .short-card:hover .card-overlay { opacity: 1; }
-    .card-play-btn {
-      width: 48px; height: 48px;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 12px;
-      transition: transform 0.2s;
-    }
-    .card-play-btn svg { width: 18px; fill: #000; }
     .card-title {
       font-family: 'Syne', sans-serif;
       font-size: 0.8rem;
@@ -375,9 +462,7 @@
     }
     .short-card:hover .short-thumb { transform: scale(1.05); }
 
-    /* ============================================================
-       VIDEOS NORMALES — nueva sección
-    ============================================================ */
+    /* VIDEOS NORMALES */
     #videos-normales { background: var(--bg); }
 
     .vnormal-layout {
@@ -386,10 +471,6 @@
       gap: 64px;
       align-items: center;
     }
-
-    /* Columna izquierda: copy */
-    .vnormal-copy {}
-
     .vnormal-statement {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
@@ -400,7 +481,6 @@
       margin-bottom: 28px;
     }
     .vnormal-statement .hl { color: var(--accent); }
-
     .vnormal-desc {
       font-size: 0.95rem;
       color: var(--muted);
@@ -409,12 +489,7 @@
     }
     .vnormal-desc strong { color: var(--text); font-weight: 400; }
     .vnormal-desc em { color: var(--accent); font-style: normal; }
-
-    .vnormal-pillars {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
+    .vnormal-pillars { display: flex; flex-direction: column; gap: 0; }
     .pillar {
       display: flex;
       align-items: flex-start;
@@ -433,7 +508,6 @@
       flex-shrink: 0;
       width: 24px;
     }
-    .pillar-body {}
     .pillar-title {
       font-family: 'Syne', sans-serif;
       font-weight: 600;
@@ -441,19 +515,9 @@
       color: var(--white);
       margin-bottom: 4px;
     }
-    .pillar-text {
-      font-size: 0.8rem;
-      color: var(--muted);
-      line-height: 1.6;
-    }
+    .pillar-text { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
 
-    /* Columna derecha: video */
-    .vnormal-video-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
+    .vnormal-video-wrap { display: flex; flex-direction: column; gap: 20px; }
     .vnormal-video {
       position: relative;
       aspect-ratio: 16/9;
@@ -464,22 +528,8 @@
     }
     .vnormal-video:hover { border-color: rgba(200,255,0,0.3); }
     .vnormal-video iframe { width: 100%; height: 100%; border: none; display: block; }
-    .vnormal-video .video-overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,0.5);
-      transition: opacity 0.3s;
-      cursor: pointer;
-    }
 
-    .vnormal-caption {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
+    .vnormal-caption { display: flex; align-items: center; gap: 16px; }
     .vnormal-caption-badge {
       padding: 5px 12px;
       border: 1px solid var(--border);
@@ -489,16 +539,8 @@
       color: var(--muted);
       white-space: nowrap;
     }
-    .vnormal-caption-line {
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-    .vnormal-caption-text {
-      font-size: 0.78rem;
-      color: var(--muted);
-      white-space: nowrap;
-    }
+    .vnormal-caption-line { flex: 1; height: 1px; background: var(--border); }
+    .vnormal-caption-text { font-size: 0.78rem; color: var(--muted); white-space: nowrap; }
 
     /* STREAM */
     #streams { background: var(--surface); }
@@ -516,23 +558,6 @@
       overflow: hidden;
     }
     .stream-video iframe { width: 100%; height: 100%; border: none; }
-    .stream-video .video-overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,0.5);
-      transition: opacity 0.3s;
-    }
-    .play-big {
-      width: 72px; height: 72px;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .play-big svg { width: 28px; fill: #000; margin-left: 4px; }
     .stream-badge {
       display: inline-block;
       padding: 4px 12px;
@@ -552,12 +577,7 @@
       margin-bottom: 16px;
       line-height: 1.2;
     }
-    .stream-desc {
-      color: var(--muted);
-      font-size: 0.9rem;
-      line-height: 1.7;
-      margin-bottom: 32px;
-    }
+    .stream-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.7; margin-bottom: 32px; }
     .stream-tags { display: flex; flex-wrap: wrap; gap: 8px; }
     .tag {
       padding: 6px 14px;
@@ -606,12 +626,7 @@
       color: var(--white);
       margin-bottom: 12px;
     }
-    .pricing-sub {
-      font-size: 0.85rem;
-      color: var(--muted);
-      line-height: 1.6;
-      margin-bottom: 32px;
-    }
+    .pricing-sub { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 32px; }
     .pricing-items {
       list-style: none;
       display: flex;
@@ -674,9 +689,10 @@
     .divider { width: 100%; height: 1px; background: var(--border); margin: 0; }
 
     /* ============================================================
-       RESPONSIVE MOBILE
+       RESPONSIVE
     ============================================================ */
     @media (max-width: 1024px) {
+      .hero-title { font-size: clamp(2.8rem, 5vw, 5rem); }
       .shorts-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
       .stream-feature { gap: 40px; }
       .vnormal-layout { gap: 40px; }
@@ -691,19 +707,19 @@
       .nav-hamburger { display: flex; }
 
       #hero {
-        padding: 100px 24px 140px;
+        padding: 100px 24px 80px;
         min-height: 100svh;
       }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
       .hero-title { font-size: clamp(2.6rem, 11vw, 4.5rem); }
       .hero-desc { font-size: 0.9rem; max-width: 100%; }
       .hero-glow { width: 280px; height: 280px; right: -15%; }
-      .hero-stats {
-        position: static;
-        margin-top: 40px;
-        justify-content: flex-start;
-        gap: 32px;
-      }
-      .stat-item { text-align: left; }
+      .hero-stats { gap: 32px; }
       .scroll-indicator { display: none; }
 
       section { padding: 64px 24px; }
@@ -732,13 +748,12 @@
 
     @media (max-width: 480px) {
       nav { padding: 16px 20px; }
-      #hero { padding: 88px 20px 120px; }
+      #hero { padding: 88px 20px 80px; }
       .hero-title { font-size: clamp(2.2rem, 12vw, 3.2rem); }
       .hero-cta { flex-direction: column; align-items: stretch; }
       .btn-primary, .btn-ghost { text-align: center; }
       section { padding: 56px 20px; }
       .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-      .card-play-btn { width: 36px; height: 36px; }
       .stream-title { font-size: 1.2rem; }
       .contact-link { padding: 12px 14px; font-size: 0.8rem; }
       .pricing-card { padding: 20px 16px; }
@@ -779,34 +794,64 @@
     <div class="hero-grid-lines"></div>
     <div class="hero-glow"></div>
 
-    <div class="hero-tag">Editor de Video · Redes Sociales</div>
+    <div class="hero-inner">
 
-    <h1 class="hero-title">
-      Tu contenido<br>
-      <span class="accent-word">elevado</span><br>
-      <span class="outline-word">al máximo.</span>
-    </h1>
+      <!-- Left: copy -->
+      <div class="hero-left">
+        <div class="hero-tag">Editor de Video · Redes Sociales</div>
 
-    <p class="hero-desc">
-      Soy <strong>Tisi</strong>, editor profesional especializado en contenido para redes sociales.
-      <strong>TikTok, Shorts y Reels</strong> con identidad visual que engancha desde el primer segundo.
-      Tiempos de entrega <em>ultra competitivos</em> sin sacrificar calidad.
-    </p>
+        <h1 class="hero-title">
+          Tu contenido<br>
+          <span class="accent-word">elevado</span><br>
+          <span class="outline-word">al máximo.</span>
+        </h1>
 
-    <div class="hero-cta">
-      <a href="#contacto" class="btn-primary">Hablemos →</a>
-      <a href="#shorts" class="btn-ghost">Ver trabajos</a>
-    </div>
+        <p class="hero-desc">
+          Soy <strong>Tisi</strong>, editor profesional especializado en contenido para redes sociales.
+          <strong>TikTok, Shorts y Reels</strong> con identidad visual que engancha desde el primer segundo.
+          Tiempos de entrega <strong>ultra competitivos</strong> sin sacrificar calidad.
+        </p>
 
-    <div class="hero-stats">
-      <div class="stat-item">
-        <div class="stat-num">24<span>h</span></div>
-        <div class="stat-label">Entrega mínima</div>
+        <div class="hero-cta">
+          <a href="#contacto" class="btn-primary">Hablemos →</a>
+          <a href="#shorts" class="btn-ghost">Ver trabajos</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-num">24<span>h</span></div>
+            <div class="stat-label">Entrega mínima</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">100<span>%</span></div>
+            <div class="stat-label">Dedicación</div>
+          </div>
+        </div>
       </div>
-      <div class="stat-item">
-        <div class="stat-num">100<span>%</span></div>
-        <div class="stat-label">Dedicación</div>
+
+      <!-- Right: presentation video -->
+      <div class="hero-right">
+        <div class="hero-video-label">Video de presentación</div>
+        <div class="hero-video-frame">
+          <!--
+            Reemplazá el ID del embed con el de tu video de presentación.
+            Ejemplo: si tu URL es https://youtu.be/XXXXXXXXXXX
+            poné: src="https://www.youtube.com/embed/XXXXXXXXXXX?rel=0&modestbranding=1"
+            https://youtu.be/
+          -->
+          <iframe
+            src="https://www.youtube.com/embed/cAdNOSP9tQA?rel=0&modestbranding=1"
+            title="Video de presentación — Tisi Editor"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="hero-video-meta">
+          <div class="hero-video-title">Porque trabajar conmigo :p</div>
+          <div class="hero-video-badge">Presentación</div>
+        </div>
       </div>
+
     </div>
 
     <div class="scroll-indicator">
@@ -826,22 +871,17 @@
 
   <div class="divider"></div>
 
-  <!-- ============================================================
-       VIDEOS NORMALES — nueva sección
-  ============================================================ -->
+  <!-- VIDEOS NORMALES -->
   <section id="videos-normales">
     <div class="section-label">Video Normal</div>
     <h2 class="section-title fade-up">Videos que no paran.</h2>
 
     <div class="vnormal-layout fade-up">
-
-      <!-- Copy -->
       <div class="vnormal-copy">
         <p class="vnormal-statement">
           No es magia.<br>
           Es edición que <span class="hl">no te deja salir.</span>
         </p>
-
         <p class="vnormal-desc">
           Hay videos que la gente cierra a los 30 segundos. Y hay videos que ven enteros sin darse cuenta.
           La diferencia no es el tema — es <strong>cómo está editado</strong>.<br><br>
@@ -849,7 +889,6 @@
           Que el espectador no tenga un solo momento de aburrimiento donde decida irse.
           <em>Retención alta = algoritmo feliz = más plata para vos.</em>
         </p>
-
         <div class="vnormal-pillars">
           <div class="pillar">
             <div class="pillar-num">01</div>
@@ -875,20 +914,13 @@
         </div>
       </div>
 
-      <!-- Video -->
       <div class="vnormal-video-wrap">
         <div class="vnormal-video">
           <iframe
             src="https://www.youtube.com/embed/2uGtWsSX_XQ?rel=0&modestbranding=1"
             title="Ejemplo Video Normal"
             allowfullscreen>
-            https://youtu.be/
           </iframe>
-          <div class="video-overlay">
-            <div class="play-big">
-              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-          </div>
         </div>
         <div class="vnormal-caption">
           <div class="vnormal-caption-badge">Ejemplo</div>
@@ -903,7 +935,6 @@
           <span class="tag">Subtítulos</span>
         </div>
       </div>
-
     </div>
   </section>
 
@@ -921,11 +952,6 @@
           title="Resumen Stream"
           allowfullscreen>
         </iframe>
-        <div class="video-overlay">
-          <div class="play-big">
-            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-          </div>
-        </div>
       </div>
 
       <div class="stream-info">
@@ -1009,9 +1035,7 @@
   </footer>
 
   <script>
-    // ============================================================
-    // SHORTS — links exactos
-    // ============================================================
+    // SHORTS
     const shorts = [
       { url: 'https://youtube.com/shorts/AaBCVAlUIRM', title: 'Short #1' },
       { url: 'https://youtube.com/shorts/7GjTjtXQt-4', title: 'Short #2' },
@@ -1042,9 +1066,6 @@
           : `<div style="width:100%;height:100%;background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.75rem;">Sin preview</div>`
         }
         <div class="card-overlay">
-          <div class="card-play-btn">
-            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-          </div>
           <div class="card-title">${title}</div>
         </div>
         <a href="${url}" target="_blank" class="card-link" aria-label="${title}"></a>
@@ -1068,7 +1089,7 @@
       });
     });
 
-    // CURSOR (solo desktop con mouse)
+    // CURSOR (solo desktop)
     if (window.matchMedia('(pointer: fine)').matches) {
       const cursor = document.getElementById('cursor');
       const ring = document.getElementById('cursorRing');
@@ -1096,11 +1117,6 @@
       entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
     }, { threshold: 0.1 });
     fadeEls.forEach(el => observer.observe(el));
-
-    // VIDEO OVERLAY click to remove
-    document.querySelectorAll('.video-overlay').forEach(overlay => {
-      overlay.addEventListener('click', () => { overlay.remove(); });
-    });
   </script>
 </body>
 </html>
