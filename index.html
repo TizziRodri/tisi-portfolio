@@ -28,31 +28,7 @@
       font-family: 'DM Sans', sans-serif;
       font-weight: 300;
       line-height: 1.6;
-      cursor: none;
       overflow-x: hidden;
-    }
-
-    /* CURSOR */
-    .cursor {
-      width: 10px; height: 10px;
-      background: var(--accent);
-      border-radius: 50%;
-      position: fixed;
-      top: 0; left: 0;
-      pointer-events: none;
-      z-index: 9999;
-      transition: transform 0.15s ease;
-      mix-blend-mode: difference;
-    }
-    .cursor-ring {
-      width: 36px; height: 36px;
-      border: 1px solid rgba(200,255,0,0.4);
-      border-radius: 50%;
-      position: fixed;
-      top: 0; left: 0;
-      pointer-events: none;
-      z-index: 9998;
-      transition: transform 0.35s cubic-bezier(.25,.46,.45,.94), width 0.3s, height 0.3s;
     }
 
     /* NAV */
@@ -136,7 +112,7 @@
     .nav-mobile-menu a:hover { color: var(--accent); }
 
     /* ============================================================
-       HERO — two-column layout with intro video
+       HERO
     ============================================================ */
     #hero {
       min-height: 100vh;
@@ -164,7 +140,6 @@
       pointer-events: none;
     }
 
-    /* inner layout */
     .hero-inner {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -173,8 +148,6 @@
       width: 100%;
       max-width: 1400px;
     }
-
-    .hero-left {}
 
     .hero-tag {
       font-size: 0.75rem;
@@ -269,7 +242,6 @@
       margin-top: 4px;
     }
 
-    /* Hero video column */
     .hero-right {
       display: flex;
       flex-direction: column;
@@ -300,10 +272,7 @@
       overflow: hidden;
       transition: border-color 0.3s;
     }
-    .hero-video-frame:hover {
-      border-color: rgba(200,255,0,0.35);
-    }
-    /* accent corner lines */
+    .hero-video-frame:hover { border-color: rgba(200,255,0,0.35); }
     .hero-video-frame::before,
     .hero-video-frame::after {
       content: '';
@@ -410,67 +379,19 @@
       margin-bottom: 64px;
     }
 
-    /* SHORTS */
-    #shorts { background: var(--bg); }
-    .shorts-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-    .short-card {
-      position: relative;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      overflow: hidden;
-      aspect-ratio: 9/16;
-      cursor: none;
-      transition: border-color 0.3s, transform 0.3s;
-    }
-    .short-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-4px);
-    }
-    .short-card .card-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 16px;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .short-card:hover .card-overlay { opacity: 1; }
-    .card-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--white);
-    }
-    .card-link {
-      position: absolute;
-      inset: 0;
-      z-index: 10;
-      text-decoration: none;
-    }
-    .short-thumb {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.4s ease;
-    }
-    .short-card:hover .short-thumb { transform: scale(1.05); }
-
-    /* VIDEOS NORMALES */
+    /* ============================================================
+       VIDEOS NORMALES — ahora PRIMERO
+    ============================================================ */
     #videos-normales { background: var(--bg); }
 
-    .vnormal-layout {
+    .vnormal-top {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: center;
+      gap: 48px;
+      align-items: start;
+      margin-bottom: 64px;
     }
+
     .vnormal-statement {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
@@ -517,7 +438,45 @@
     }
     .pillar-text { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
 
-    .vnormal-video-wrap { display: flex; flex-direction: column; gap: 20px; }
+    /* Placeholder filler columna derecha en el bloque de texto */
+    .vnormal-top-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .vnormal-top-note {
+      padding: 24px;
+      border: 1px solid var(--border);
+      background: rgba(200,255,0,0.03);
+    }
+    .vnormal-top-note-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .vnormal-top-note p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* Grid de 2 videos side by side */
+    .vnormal-videos-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .vnormal-video-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
     .vnormal-video {
       position: relative;
       aspect-ratio: 16/9;
@@ -529,7 +488,18 @@
     .vnormal-video:hover { border-color: rgba(200,255,0,0.3); }
     .vnormal-video iframe { width: 100%; height: 100%; border: none; display: block; }
 
-    .vnormal-caption { display: flex; align-items: center; gap: 16px; }
+    .vnormal-video-info {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .vnormal-video-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
     .vnormal-caption-badge {
       padding: 5px 12px;
       border: 1px solid var(--border);
@@ -539,11 +509,84 @@
       color: var(--muted);
       white-space: nowrap;
     }
-    .vnormal-caption-line { flex: 1; height: 1px; background: var(--border); }
-    .vnormal-caption-text { font-size: 0.78rem; color: var(--muted); white-space: nowrap; }
+    .vnormal-caption-badge.accent {
+      border-color: rgba(200,255,0,0.25);
+      color: var(--accent);
+      background: rgba(200,255,0,0.05);
+    }
+
+    .vnormal-video-label-text {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .stream-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      padding: 6px 14px;
+      background: rgba(200,255,0,0.06);
+      border: 1px solid rgba(200,255,0,0.15);
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* SHORTS */
+    #shorts { background: var(--surface); }
+    .shorts-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .short-card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      aspect-ratio: 9/16;
+      cursor: pointer;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .short-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+    .short-card .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 16px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .short-card:hover .card-overlay { opacity: 1; }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+    .card-link {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      text-decoration: none;
+    }
+    .short-thumb {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .short-card:hover .short-thumb { transform: scale(1.05); }
 
     /* STREAM */
-    #streams { background: var(--surface); }
+    #streams { background: var(--bg); }
     .stream-feature {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -553,7 +596,7 @@
     .stream-video {
       position: relative;
       aspect-ratio: 16/9;
-      background: var(--bg);
+      background: var(--surface);
       border: 1px solid var(--border);
       overflow: hidden;
     }
@@ -578,19 +621,9 @@
       line-height: 1.2;
     }
     .stream-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.7; margin-bottom: 32px; }
-    .stream-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-    .tag {
-      padding: 6px 14px;
-      background: rgba(200,255,0,0.06);
-      border: 1px solid rgba(200,255,0,0.15);
-      color: var(--accent);
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
 
     /* CONTACT */
-    #contacto { background: var(--bg); }
+    #contacto { background: var(--surface); }
     .contact-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -606,7 +639,7 @@
     .about-text strong { color: var(--text); font-weight: 400; }
     .about-text em { color: var(--accent); font-style: normal; }
     .pricing-card {
-      background: var(--surface);
+      background: var(--bg);
       border: 1px solid var(--border);
       padding: 40px;
       position: relative;
@@ -695,13 +728,9 @@
       .hero-title { font-size: clamp(2.8rem, 5vw, 5rem); }
       .shorts-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
       .stream-feature { gap: 40px; }
-      .vnormal-layout { gap: 40px; }
     }
 
     @media (max-width: 768px) {
-      body { cursor: auto; }
-      .cursor, .cursor-ring { display: none; }
-
       nav { padding: 18px 24px; }
       .nav-links { display: none; }
       .nav-hamburger { display: flex; }
@@ -727,8 +756,9 @@
 
       .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
 
-      .vnormal-layout { grid-template-columns: 1fr; gap: 28px; }
+      .vnormal-top { grid-template-columns: 1fr; gap: 28px; }
       .vnormal-statement { font-size: clamp(1.3rem, 5vw, 1.9rem); }
+      .vnormal-videos-grid { grid-template-columns: 1fr; gap: 40px; }
 
       .stream-feature { grid-template-columns: 1fr; gap: 28px; }
       .stream-title { font-size: 1.4rem; }
@@ -763,16 +793,12 @@
 </head>
 <body>
 
-  <!-- CURSOR -->
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
-
   <!-- NAV -->
   <nav>
     <div class="nav-logo">Tisi<span>.</span></div>
     <ul class="nav-links">
-      <li><a href="#shorts">Shorts</a></li>
       <li><a href="#videos-normales">Videos</a></li>
+      <li><a href="#shorts">Shorts</a></li>
       <li><a href="#streams">Streams</a></li>
       <li><a href="#contacto">Contacto</a></li>
     </ul>
@@ -783,8 +809,8 @@
 
   <!-- MOBILE MENU -->
   <div class="nav-mobile-menu" id="mobileMenu">
-    <a href="#shorts" class="mobile-link">Shorts</a>
     <a href="#videos-normales" class="mobile-link">Videos</a>
+    <a href="#shorts" class="mobile-link">Shorts</a>
     <a href="#streams" class="mobile-link">Streams</a>
     <a href="#contacto" class="mobile-link">Contacto</a>
   </div>
@@ -795,8 +821,6 @@
     <div class="hero-glow"></div>
 
     <div class="hero-inner">
-
-      <!-- Left: copy -->
       <div class="hero-left">
         <div class="hero-tag">Editor de Video · Redes Sociales</div>
 
@@ -814,7 +838,7 @@
 
         <div class="hero-cta">
           <a href="#contacto" class="btn-primary">Hablemos →</a>
-          <a href="#shorts" class="btn-ghost">Ver trabajos</a>
+          <a href="#videos-normales" class="btn-ghost">Ver trabajos</a>
         </div>
 
         <div class="hero-stats">
@@ -829,16 +853,9 @@
         </div>
       </div>
 
-      <!-- Right: presentation video -->
       <div class="hero-right">
         <div class="hero-video-label">Video de presentación</div>
         <div class="hero-video-frame">
-          <!--
-            Reemplazá el ID del embed con el de tu video de presentación.
-            Ejemplo: si tu URL es https://youtu.be/XXXXXXXXXXX
-            poné: src="https://www.youtube.com/embed/XXXXXXXXXXX?rel=0&modestbranding=1"
-            https://youtu.be/
-          -->
           <iframe
             src="https://www.youtube.com/embed/cAdNOSP9tQA?rel=0&modestbranding=1"
             title="Video de presentación — Tisi Editor"
@@ -851,7 +868,6 @@
           <div class="hero-video-badge">Presentación</div>
         </div>
       </div>
-
     </div>
 
     <div class="scroll-indicator">
@@ -862,22 +878,16 @@
 
   <div class="divider"></div>
 
-  <!-- SHORTS / TIKTOKS / REELS -->
-  <section id="shorts">
-    <div class="section-label">Portafolio</div>
-    <h2 class="section-title fade-up">TikToks / Shorts / Reels</h2>
-    <div class="shorts-grid fade-up" id="shortsGrid"></div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- VIDEOS NORMALES -->
+  <!-- ============================================================
+       1. VIDEOS NORMALES — PRIMERO
+  ============================================================ -->
   <section id="videos-normales">
     <div class="section-label">Video Normal</div>
     <h2 class="section-title fade-up">Videos que no paran.</h2>
 
-    <div class="vnormal-layout fade-up">
-      <div class="vnormal-copy">
+    <!-- Texto explicativo + nota -->
+    <div class="vnormal-top fade-up">
+      <div>
         <p class="vnormal-statement">
           No es magia.<br>
           Es edición que <span class="hl">no te deja salir.</span>
@@ -914,7 +924,47 @@
         </div>
       </div>
 
-      <div class="vnormal-video-wrap">
+      <div class="vnormal-top-right">
+        <div class="vnormal-top-note">
+          <div class="vnormal-top-note-title">Dos estilos. Un mismo objetivo.</div>
+          <p>Abajo podés ver dos ejemplos de video normal editado: un hook estilo <strong style="color:var(--text)">Minecraft Challenge</strong> cargado de motion graphics y dinamismo visual, y un video más clásico con el mismo nivel de cuidado en cada corte. Distintos formatos, misma obsesión por que nadie apague la pantalla.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dos videos side by side -->
+    <div class="vnormal-videos-grid fade-up">
+
+      <!-- Video izquierdo: Minecraft Challenge Hook -->
+      <div class="vnormal-video-col">
+        <div class="vnormal-video">
+          <!--
+            Reemplazá con el ID del video hook de Minecraft Challenge.
+            Ejemplo: src="https://www.youtube.com/embed/TU_ID_AQUI?rel=0&modestbranding=1"
+          -->
+          <iframe
+            src="https://www.youtube.com/embed/oHHBYsiIqSQ?rel=0&modestbranding=1"
+            title="Hook Minecraft Challenge"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="vnormal-video-info">
+          <div class="vnormal-video-header">
+            <div class="vnormal-video-label-text">Hook — Minecraft Challenge</div>
+            <div class="vnormal-caption-badge accent">Nuevo</div>
+          </div>
+          <div class="stream-tags">
+            <span class="tag">Motion Graphics</span>
+            <span class="tag">DaVinci Resolve</span>
+            <span class="tag">SFX</span>
+            <span class="tag">Hook Potente</span>
+            <span class="tag">Sin perder ritmo</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video derecho: Video Normal clásico -->
+      <div class="vnormal-video-col">
         <div class="vnormal-video">
           <iframe
             src="https://www.youtube.com/embed/2uGtWsSX_XQ?rel=0&modestbranding=1"
@@ -922,25 +972,40 @@
             allowfullscreen>
           </iframe>
         </div>
-        <div class="vnormal-caption">
-          <div class="vnormal-caption-badge">Ejemplo</div>
-          <div class="vnormal-caption-line"></div>
-          <div class="vnormal-caption-text">Video Normal editado</div>
-        </div>
-        <div class="stream-tags">
-          <span class="tag">Retención Alta</span>
-          <span class="tag">Ritmo Preciso</span>
-          <span class="tag">Zooms</span>
-          <span class="tag">Efectos de sonido</span>
-          <span class="tag">Subtítulos</span>
+        <div class="vnormal-video-info">
+          <div class="vnormal-video-header">
+            <div class="vnormal-video-label-text">Video Normal editado</div>
+            <div class="vnormal-caption-badge">Ejemplo</div>
+          </div>
+          <div class="stream-tags">
+            <span class="tag">Retención Alta</span>
+            <span class="tag">Ritmo Preciso</span>
+            <span class="tag">Zooms</span>
+            <span class="tag">Efectos de sonido</span>
+            <span class="tag">Subtítulos</span>
+          </div>
         </div>
       </div>
+
     </div>
   </section>
 
   <div class="divider"></div>
 
-  <!-- LONG VIDEO / STREAMS -->
+  <!-- ============================================================
+       2. SHORTS — EN EL MEDIO
+  ============================================================ -->
+  <section id="shorts">
+    <div class="section-label">Portafolio</div>
+    <h2 class="section-title fade-up">TikToks / Shorts / Reels</h2>
+    <div class="shorts-grid fade-up" id="shortsGrid"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       3. STREAMS — AL FINAL
+  ============================================================ -->
   <section id="streams">
     <div class="section-label">Video Largo</div>
     <h2 class="section-title fade-up">Resúmenes de Streams</h2>
@@ -1088,28 +1153,6 @@
         document.body.style.overflow = '';
       });
     });
-
-    // CURSOR (solo desktop)
-    if (window.matchMedia('(pointer: fine)').matches) {
-      const cursor = document.getElementById('cursor');
-      const ring = document.getElementById('cursorRing');
-      let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-      document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX; mouseY = e.clientY;
-        cursor.style.transform = `translate(${mouseX - 5}px, ${mouseY - 5}px)`;
-      });
-      function animateRing() {
-        ringX += (mouseX - ringX) * 0.12;
-        ringY += (mouseY - ringY) * 0.12;
-        ring.style.transform = `translate(${ringX - 18}px, ${ringY - 18}px)`;
-        requestAnimationFrame(animateRing);
-      }
-      animateRing();
-      document.querySelectorAll('a, button').forEach(el => {
-        el.addEventListener('mouseenter', () => { ring.style.width = '60px'; ring.style.height = '60px'; });
-        el.addEventListener('mouseleave', () => { ring.style.width = '36px'; ring.style.height = '36px'; });
-      });
-    }
 
     // FADE UP ON SCROLL
     const fadeEls = document.querySelectorAll('.fade-up');
