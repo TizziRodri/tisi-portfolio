@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tisi — Editor de Video</title>
+  <title>Tisi — Video Editor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
   <style>
@@ -51,6 +51,11 @@
       color: var(--white);
     }
     .nav-logo span { color: var(--accent); }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
     .nav-links {
       display: flex;
       gap: 36px;
@@ -65,6 +70,38 @@
       transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--accent); }
+
+    /* LANG SWITCHER */
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      border: 1px solid var(--border);
+      padding: 2px;
+      background: rgba(255,255,255,0.02);
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px 10px;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      transition: color 0.2s, background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      text-transform: uppercase;
+    }
+    .lang-btn .flag { font-size: 0.9rem; line-height: 1; }
+    .lang-btn:hover { color: var(--text); }
+    .lang-btn.active {
+      background: var(--accent);
+      color: #000;
+    }
 
     /* HAMBURGER */
     .nav-hamburger {
@@ -110,6 +147,21 @@
       transition: color 0.2s;
     }
     .nav-mobile-menu a:hover { color: var(--accent); }
+    .nav-mobile-menu .mobile-lang {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .nav-mobile-menu .mobile-lang .lang-btn {
+      font-size: 0.85rem;
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+    }
+    .nav-mobile-menu .mobile-lang .lang-btn.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
 
     /* HERO */
     #hero {
@@ -137,7 +189,6 @@
       top: 10%; right: -10%;
       pointer-events: none;
     }
-
     .hero-inner {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -146,7 +197,6 @@
       width: 100%;
       max-width: 1400px;
     }
-
     .hero-tag {
       font-size: 0.75rem;
       letter-spacing: 0.18em;
@@ -218,11 +268,7 @@
       transition: border-color 0.2s, color 0.2s;
     }
     .btn-ghost:hover { border-color: var(--muted); color: var(--white); }
-
-    .hero-stats {
-      display: flex;
-      gap: 40px;
-    }
+    .hero-stats { display: flex; gap: 40px; }
     .stat-item { text-align: left; }
     .stat-num {
       font-family: 'Syne', sans-serif;
@@ -239,13 +285,7 @@
       color: var(--muted);
       margin-top: 4px;
     }
-
-    .hero-right {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
+    .hero-right { display: flex; flex-direction: column; gap: 16px; }
     .hero-video-label {
       font-size: 0.7rem;
       letter-spacing: 0.18em;
@@ -261,7 +301,6 @@
       width: 20px; height: 1px;
       background: var(--muted);
     }
-
     .hero-video-frame {
       position: relative;
       aspect-ratio: 16/9;
@@ -290,12 +329,7 @@
       border-bottom: 2px solid var(--accent);
       border-right: 2px solid var(--accent);
     }
-    .hero-video-frame iframe {
-      width: 100%; height: 100%;
-      border: none;
-      display: block;
-    }
-
+    .hero-video-frame iframe { width: 100%; height: 100%; border: none; display: block; }
     .hero-video-meta {
       display: flex;
       align-items: center;
@@ -316,7 +350,6 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
     }
-
     .scroll-indicator {
       position: absolute;
       bottom: 40px; left: 48px;
@@ -379,7 +412,6 @@
 
     /* VIDEOS NORMALES */
     #videos-normales { background: var(--bg); }
-
     .vnormal-top {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -387,7 +419,6 @@
       align-items: start;
       margin-bottom: 64px;
     }
-
     .vnormal-statement {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
@@ -433,12 +464,7 @@
       margin-bottom: 4px;
     }
     .pillar-text { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
-
-    .vnormal-top-right {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-    }
+    .vnormal-top-right { display: flex; flex-direction: column; justify-content: flex-end; }
     .vnormal-top-note {
       padding: 24px;
       border: 1px solid var(--border);
@@ -453,25 +479,13 @@
       text-transform: uppercase;
       margin-bottom: 10px;
     }
-    .vnormal-top-note p {
-      font-size: 0.82rem;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    /* Grid de 3 videos — ahora 3 columnas */
+    .vnormal-top-note p { font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
     .vnormal-videos-grid {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 28px;
     }
-
-    .vnormal-video-col {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
+    .vnormal-video-col { display: flex; flex-direction: column; gap: 16px; }
     .vnormal-video {
       position: relative;
       aspect-ratio: 16/9;
@@ -482,19 +496,12 @@
     }
     .vnormal-video:hover { border-color: rgba(200,255,0,0.3); }
     .vnormal-video iframe { width: 100%; height: 100%; border: none; display: block; }
-
-    .vnormal-video-info {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
+    .vnormal-video-info { display: flex; flex-direction: column; gap: 12px; }
     .vnormal-video-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-
     .vnormal-caption-badge {
       padding: 5px 12px;
       border: 1px solid var(--border);
@@ -514,14 +521,12 @@
       color: var(--accent2);
       background: rgba(255,107,53,0.06);
     }
-
     .vnormal-video-label-text {
       font-family: 'Syne', sans-serif;
       font-size: 0.85rem;
       font-weight: 600;
       color: var(--text);
     }
-
     .stream-tags { display: flex; flex-wrap: wrap; gap: 8px; }
     .tag {
       padding: 6px 14px;
@@ -549,10 +554,7 @@
       cursor: pointer;
       transition: border-color 0.3s, transform 0.3s;
     }
-    .short-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-4px);
-    }
+    .short-card:hover { border-color: var(--accent); transform: translateY(-4px); }
     .short-card .card-overlay {
       position: absolute;
       inset: 0;
@@ -571,12 +573,7 @@
       font-weight: 600;
       color: var(--white);
     }
-    .card-link {
-      position: absolute;
-      inset: 0;
-      z-index: 10;
-      text-decoration: none;
-    }
+    .card-link { position: absolute; inset: 0; z-index: 10; text-decoration: none; }
     .short-thumb {
       width: 100%; height: 100%;
       object-fit: cover;
@@ -714,6 +711,10 @@
     .footer-logo span { color: var(--accent); }
     .footer-copy { font-size: 0.75rem; color: var(--muted); }
 
+    /* LANG TRANSITION */
+    [data-t] { transition: opacity 0.15s ease; }
+    body.lang-switching [data-t] { opacity: 0; }
+
     /* ANIMATIONS */
     .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
@@ -732,18 +733,11 @@
     @media (max-width: 768px) {
       nav { padding: 18px 24px; }
       .nav-links { display: none; }
+      .lang-switcher { display: none; }
       .nav-hamburger { display: flex; }
 
-      #hero {
-        padding: 100px 24px 80px;
-        min-height: 100svh;
-      }
-
-      .hero-inner {
-        grid-template-columns: 1fr;
-        gap: 40px;
-      }
-
+      #hero { padding: 100px 24px 80px; min-height: 100svh; }
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
       .hero-title { font-size: clamp(2.6rem, 11vw, 4.5rem); }
       .hero-desc { font-size: 0.9rem; max-width: 100%; }
       .hero-glow { width: 280px; height: 280px; right: -15%; }
@@ -754,25 +748,16 @@
       .section-title { margin-bottom: 32px; font-size: clamp(1.6rem, 6vw, 2.4rem); }
 
       .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-
       .vnormal-top { grid-template-columns: 1fr; gap: 28px; }
       .vnormal-statement { font-size: clamp(1.3rem, 5vw, 1.9rem); }
       .vnormal-videos-grid { grid-template-columns: 1fr; gap: 40px; }
-
       .stream-feature { grid-template-columns: 1fr; gap: 28px; }
       .stream-title { font-size: 1.4rem; }
       .stream-desc { font-size: 0.85rem; }
-
       .contact-grid { grid-template-columns: 1fr; gap: 40px; }
       .about-text { font-size: 0.95rem; margin-bottom: 28px; }
       .pricing-card { padding: 24px 20px; }
-
-      footer {
-        padding: 24px;
-        flex-direction: column;
-        gap: 6px;
-        text-align: center;
-      }
+      footer { padding: 24px; flex-direction: column; gap: 6px; text-align: center; }
     }
 
     @media (max-width: 480px) {
@@ -795,12 +780,18 @@
   <!-- NAV -->
   <nav>
     <div class="nav-logo">Tisi<span>.</span></div>
-    <ul class="nav-links">
-      <li><a href="#videos-normales">Videos</a></li>
-      <li><a href="#shorts">Shorts</a></li>
-      <li><a href="#streams">Streams</a></li>
-      <li><a href="#contacto">Contacto</a></li>
-    </ul>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#videos-normales" data-t="nav.videos"></a></li>
+        <li><a href="#shorts" data-t="nav.shorts"></a></li>
+        <li><a href="#streams" data-t="nav.streams"></a></li>
+        <li><a href="#contacto" data-t="nav.contact"></a></li>
+      </ul>
+      <div class="lang-switcher">
+        <button class="lang-btn active" data-lang="es"><span class="flag">🇦🇷</span> ES</button>
+        <button class="lang-btn" data-lang="en"><span class="flag">🇺🇸</span> EN</button>
+      </div>
+    </div>
     <button class="nav-hamburger" id="hamburger" aria-label="Abrir menú">
       <span></span><span></span><span></span>
     </button>
@@ -808,10 +799,14 @@
 
   <!-- MOBILE MENU -->
   <div class="nav-mobile-menu" id="mobileMenu">
-    <a href="#videos-normales" class="mobile-link">Videos</a>
-    <a href="#shorts" class="mobile-link">Shorts</a>
-    <a href="#streams" class="mobile-link">Streams</a>
-    <a href="#contacto" class="mobile-link">Contacto</a>
+    <a href="#videos-normales" class="mobile-link" data-t="nav.videos"></a>
+    <a href="#shorts" class="mobile-link" data-t="nav.shorts"></a>
+    <a href="#streams" class="mobile-link" data-t="nav.streams"></a>
+    <a href="#contacto" class="mobile-link" data-t="nav.contact"></a>
+    <div class="mobile-lang">
+      <button class="lang-btn active" data-lang="es"><span class="flag">🇦🇷</span> ES</button>
+      <button class="lang-btn" data-lang="en"><span class="flag">🇺🇸</span> EN</button>
+    </div>
   </div>
 
   <!-- HERO -->
@@ -821,39 +816,35 @@
 
     <div class="hero-inner">
       <div class="hero-left">
-        <div class="hero-tag">Editor de Video · Redes Sociales</div>
+        <div class="hero-tag" data-t="hero.tag"></div>
 
         <h1 class="hero-title">
-          Tu contenido<br>
-          <span class="accent-word">elevado</span><br>
-          <span class="outline-word">al máximo.</span>
+          <span data-t="hero.title1"></span><br>
+          <span class="accent-word" data-t="hero.title2"></span><br>
+          <span class="outline-word" data-t="hero.title3"></span>
         </h1>
 
-        <p class="hero-desc">
-          Soy <strong>Tisi</strong>, editor profesional especializado en contenido para redes sociales.
-          <strong>TikTok, Shorts y Reels</strong> con identidad visual que engancha desde el primer segundo.
-          Tiempos de entrega <strong>ultra competitivos</strong> sin sacrificar calidad.
-        </p>
+        <p class="hero-desc" data-t-html="hero.desc"></p>
 
         <div class="hero-cta">
-          <a href="#contacto" class="btn-primary">Hablemos →</a>
-          <a href="#videos-normales" class="btn-ghost">Ver trabajos</a>
+          <a href="#contacto" class="btn-primary" data-t="hero.cta1"></a>
+          <a href="#videos-normales" class="btn-ghost" data-t="hero.cta2"></a>
         </div>
 
         <div class="hero-stats">
           <div class="stat-item">
             <div class="stat-num">24<span>h</span></div>
-            <div class="stat-label">Entrega mínima</div>
+            <div class="stat-label" data-t="hero.stat1"></div>
           </div>
           <div class="stat-item">
             <div class="stat-num">100<span>%</span></div>
-            <div class="stat-label">Dedicación</div>
+            <div class="stat-label" data-t="hero.stat2"></div>
           </div>
         </div>
       </div>
 
       <div class="hero-right">
-        <div class="hero-video-label">Video de presentación</div>
+        <div class="hero-video-label" data-t="hero.videoLabel"></div>
         <div class="hero-video-frame">
           <iframe
             src="https://www.youtube.com/embed/cAdNOSP9tQA?rel=0&modestbranding=1"
@@ -863,15 +854,15 @@
           </iframe>
         </div>
         <div class="hero-video-meta">
-          <div class="hero-video-title">Porque trabajar conmigo :p</div>
-          <div class="hero-video-badge">Presentación</div>
+          <div class="hero-video-title" data-t="hero.videoTitle"></div>
+          <div class="hero-video-badge" data-t="hero.videoBadge"></div>
         </div>
       </div>
     </div>
 
     <div class="scroll-indicator">
       <div class="scroll-line"></div>
-      Scroll
+      <span data-t="hero.scroll"></span>
     </div>
   </section>
 
@@ -879,42 +870,33 @@
 
   <!-- VIDEOS NORMALES -->
   <section id="videos-normales">
-    <div class="section-label">Video Normal</div>
-    <h2 class="section-title fade-up">Videos que no paran.</h2>
+    <div class="section-label" data-t="videos.label"></div>
+    <h2 class="section-title fade-up" data-t="videos.title"></h2>
 
     <div class="vnormal-top fade-up">
       <div>
-        <p class="vnormal-statement">
-          No es magia.<br>
-          Es edición que <span class="hl">no te deja salir.</span>
-        </p>
-        <p class="vnormal-desc">
-          Hay videos que la gente cierra a los 30 segundos. Y hay videos que ven enteros sin darse cuenta.
-          La diferencia no es el tema — es <strong>cómo está editado</strong>.<br><br>
-          Trabajo cada corte para que el ritmo nunca decaiga. Que siempre haya algo pasando.
-          Que el espectador no tenga un solo momento de aburrimiento donde decida irse.
-          <em>Retención alta = algoritmo feliz = más plata para vos.</em>
-        </p>
+        <p class="vnormal-statement" data-t-html="videos.statement"></p>
+        <p class="vnormal-desc" data-t-html="videos.desc"></p>
         <div class="vnormal-pillars">
           <div class="pillar">
             <div class="pillar-num">01</div>
             <div class="pillar-body">
-              <div class="pillar-title">Ritmo que engancha</div>
-              <div class="pillar-text">Cada corte tiene un propósito. El silencio dura lo justo. Las transiciones fluyen. Nada sobra, nada falta.</div>
+              <div class="pillar-title" data-t="videos.p1title"></div>
+              <div class="pillar-text" data-t="videos.p1text"></div>
             </div>
           </div>
           <div class="pillar">
             <div class="pillar-num">02</div>
             <div class="pillar-body">
-              <div class="pillar-title">Efectos que amplifican</div>
-              <div class="pillar-text">Zooms, SFX — no como adorno sino como herramienta para darle peso a cada momento.</div>
+              <div class="pillar-title" data-t="videos.p2title"></div>
+              <div class="pillar-text" data-t="videos.p2text"></div>
             </div>
           </div>
           <div class="pillar">
             <div class="pillar-num">03</div>
             <div class="pillar-body">
-              <div class="pillar-title">Retención real</div>
-              <div class="pillar-text">El algoritmo premia a los que retienen. Edito pensando en que la gente llegue al final — siempre.</div>
+              <div class="pillar-title" data-t="videos.p3title"></div>
+              <div class="pillar-text" data-t="videos.p3text"></div>
             </div>
           </div>
         </div>
@@ -922,84 +904,71 @@
 
       <div class="vnormal-top-right">
         <div class="vnormal-top-note">
-          <div class="vnormal-top-note-title">Tres estilos. Un mismo objetivo.</div>
-          <p>Tres ejemplos de video normal editado: un video de <strong style="color:var(--text)">Roblox</strong> con narrativa sólida y efectos bien medidos, un hook estilo <strong style="color:var(--text)">Minecraft Challenge</strong> cargado de motion graphics y dinamismo visual, y un video más clásico con el mismo nivel de cuidado en cada corte. Distintos formatos, misma obsesión por que nadie apague la pantalla.</p>
+          <div class="vnormal-top-note-title" data-t="videos.noteTitle"></div>
+          <p data-t-html="videos.noteText"></p>
         </div>
       </div>
     </div>
 
-    <!-- Tres videos -->
     <div class="vnormal-videos-grid fade-up">
 
-      <!-- Video 1: Roblox — NUEVO, va primero -->
+      <!-- Roblox -->
       <div class="vnormal-video-col">
         <div class="vnormal-video">
-          <iframe
-            src="https://www.youtube.com/embed/Un_J5oLxTvo?rel=0&modestbranding=1"
-            title="Video Normal Roblox"
-            allowfullscreen>
-          </iframe>
+          <iframe src="https://www.youtube.com/embed/Un_J5oLxTvo?rel=0&modestbranding=1" title="Video Normal Roblox" allowfullscreen></iframe>
         </div>
         <div class="vnormal-video-info">
           <div class="vnormal-video-header">
-            <div class="vnormal-video-label-text">Video Normal — Roblox</div>
-            <div class="vnormal-caption-badge orange">Destacado</div>
+            <div class="vnormal-video-label-text" data-t="videos.robloxLabel"></div>
+            <div class="vnormal-caption-badge orange" data-t="videos.robloxBadge"></div>
           </div>
           <div class="stream-tags">
-            <span class="tag">Narrativa Fluida</span>
-            <span class="tag">Color Grading</span>
+            <span class="tag" data-t="tag.narrative"></span>
+            <span class="tag" data-t="tag.colorGrading"></span>
             <span class="tag">SFX</span>
-            <span class="tag">Subtítulos</span>
-            <span class="tag">Ritmo Preciso</span>
+            <span class="tag" data-t="tag.subtitles"></span>
+            <span class="tag" data-t="tag.rhythm"></span>
             <span class="tag">Zooms</span>
           </div>
         </div>
       </div>
 
-      <!-- Video 2: Minecraft Challenge Hook -->
+      <!-- Minecraft -->
       <div class="vnormal-video-col">
         <div class="vnormal-video">
-          <iframe
-            src="https://www.youtube.com/embed/oHHBYsiIqSQ?rel=0&modestbranding=1"
-            title="Hook Minecraft Challenge"
-            allowfullscreen>
-          </iframe>
+          <iframe src="https://www.youtube.com/embed/oHHBYsiIqSQ?rel=0&modestbranding=1" title="Hook Minecraft Challenge" allowfullscreen></iframe>
         </div>
         <div class="vnormal-video-info">
           <div class="vnormal-video-header">
-            <div class="vnormal-video-label-text">Hook — Minecraft Challenge</div>
-            <div class="vnormal-caption-badge accent">Nuevo</div>
+            <div class="vnormal-video-label-text" data-t="videos.mcLabel"></div>
+            <div class="vnormal-caption-badge accent" data-t="videos.mcBadge"></div>
           </div>
           <div class="stream-tags">
             <span class="tag">Motion Graphics</span>
             <span class="tag">DaVinci Resolve</span>
             <span class="tag">SFX</span>
-            <span class="tag">Hook Potente</span>
-            <span class="tag">Sin perder ritmo</span>
+            <span class="tag" data-t="tag.hook"></span>
+            <span class="tag" data-t="tag.noDropRhythm"></span>
           </div>
         </div>
       </div>
 
-      <!-- Video 3: Video Normal clásico -->
+      <!-- Clásico -->
       <div class="vnormal-video-col">
         <div class="vnormal-video">
-          <iframe
-            src="https://www.youtube.com/embed/2uGtWsSX_XQ?rel=0&modestbranding=1"
-            title="Ejemplo Video Normal"
-            allowfullscreen>
-          </iframe>
+          <iframe src="https://www.youtube.com/embed/2uGtWsSX_XQ?rel=0&modestbranding=1" title="Ejemplo Video Normal" allowfullscreen></iframe>
         </div>
         <div class="vnormal-video-info">
           <div class="vnormal-video-header">
-            <div class="vnormal-video-label-text">Video Normal editado</div>
-            <div class="vnormal-caption-badge">Ejemplo</div>
+            <div class="vnormal-video-label-text" data-t="videos.classicLabel"></div>
+            <div class="vnormal-caption-badge" data-t="videos.classicBadge"></div>
           </div>
           <div class="stream-tags">
-            <span class="tag">Retención Alta</span>
-            <span class="tag">Ritmo Preciso</span>
+            <span class="tag" data-t="tag.retention"></span>
+            <span class="tag" data-t="tag.rhythm"></span>
             <span class="tag">Zooms</span>
-            <span class="tag">Efectos de sonido</span>
-            <span class="tag">Subtítulos</span>
+            <span class="tag">SFX</span>
+            <span class="tag" data-t="tag.subtitles"></span>
           </div>
         </div>
       </div>
@@ -1011,8 +980,8 @@
 
   <!-- SHORTS -->
   <section id="shorts">
-    <div class="section-label">Portafolio</div>
-    <h2 class="section-title fade-up">TikToks / Shorts / Reels</h2>
+    <div class="section-label" data-t="shorts.label"></div>
+    <h2 class="section-title fade-up" data-t="shorts.title"></h2>
     <div class="shorts-grid fade-up" id="shortsGrid"></div>
   </section>
 
@@ -1020,29 +989,21 @@
 
   <!-- STREAMS -->
   <section id="streams">
-    <div class="section-label">Video Largo</div>
-    <h2 class="section-title fade-up">Resúmenes de Streams</h2>
+    <div class="section-label" data-t="streams.label"></div>
+    <h2 class="section-title fade-up" data-t="streams.title"></h2>
 
     <div class="stream-feature fade-up">
       <div class="stream-video">
-        <iframe
-          src="https://www.youtube.com/embed/9Lt808zHE08?rel=0&modestbranding=1"
-          title="Resumen Stream"
-          allowfullscreen>
-        </iframe>
+        <iframe src="https://www.youtube.com/embed/9Lt808zHE08?rel=0&modestbranding=1" title="Resumen Stream" allowfullscreen></iframe>
       </div>
-
       <div class="stream-info">
-        <div class="stream-badge">Resumen Completo · 9hs → 1hs</div>
-        <h3 class="stream-title">De 9 horas de stream a 1 hora de video</h3>
-        <p class="stream-desc">
-          Esto no es un compilado de momentos sueltos. Es un <strong style="color:var(--text)">resumen narrativo completo</strong>: tomo 9 horas de stream y las convierto en 1 hora de video que se ve de corrido, con principio, desarrollo y cierre.<br><br>
-          Cada corte tiene sentido. El ritmo no decae. Y encima va cargado de zooms, efectos de sonido y subtítulos que le dan vida a cada momento.
-        </p>
+        <div class="stream-badge" data-t="streams.badge"></div>
+        <h3 class="stream-title" data-t="streams.streamTitle"></h3>
+        <p class="stream-desc" data-t-html="streams.desc"></p>
         <div class="stream-tags">
-          <span class="tag">Resumen Narrativo</span>
-          <span class="tag">Zooms & SFX</span>
-          <span class="tag">Subtítulos</span>
+          <span class="tag" data-t="streams.tag1"></span>
+          <span class="tag" data-t="streams.tag2"></span>
+          <span class="tag" data-t="tag.subtitles"></span>
           <span class="tag">9hs → 1hs</span>
           <span class="tag">Sony Vegas</span>
         </div>
@@ -1054,31 +1015,16 @@
 
   <!-- CONTACT -->
   <section id="contacto">
-    <div class="section-label">Contacto</div>
-    <h2 class="section-title fade-up">Trabajemos juntos</h2>
+    <div class="section-label" data-t="contact.label"></div>
+    <h2 class="section-title fade-up" data-t="contact.title"></h2>
 
     <div class="contact-grid fade-up">
       <div>
-        <p class="about-text">
-          No manejo precios fijos. Cada proyecto es diferente, y prefiero que el precio
-          <em>se adapte a lo que vos necesitás</em>, no al revés.<br><br>
-          Ya sea un video único, un pack mensual, o algo completamente personalizado — 
-          <strong>lo hablamos y llegamos a algo que funcione para los dos.</strong>
-          <br><br>
-          Lo que sí garantizo: <em>tiempos de entrega rápidos</em>, comunicación fluida, y un resultado
-          que realmente le sirva a tu canal o marca.
-        </p>
+        <p class="about-text" data-t-html="contact.aboutText"></p>
         <div class="pricing-card">
-          <div class="pricing-title">¿Qué ofrezco?</div>
-          <p class="pricing-sub">El precio varía según el proyecto, la cantidad y la frecuencia. Escribime y te hago un presupuesto a medida.</p>
-          <ul class="pricing-items">
-            <li>TikToks, Shorts y Reels editados profesionalmente</li>
-            <li>Videos normales con retención alta y ritmo preciso</li>
-            <li>Resúmenes y highlights de streams</li>
-            <li>Edición con efectos, transiciones y color grading</li>
-            <li>Entregas en 24–72 hs según el formato</li>
-            <li>Revisiones incluidas hasta que quede perfecto</li>
-          </ul>
+          <div class="pricing-title" data-t="contact.pricingTitle"></div>
+          <p class="pricing-sub" data-t="contact.pricingSub"></p>
+          <ul class="pricing-items" id="pricingList"></ul>
         </div>
       </div>
 
@@ -1109,11 +1055,218 @@
   <!-- FOOTER -->
   <footer>
     <div class="footer-logo">Tisi<span>.</span></div>
-    <div class="footer-copy">© 2026 Tisi — Editor de Video para Redes Sociales</div>
+    <div class="footer-copy" data-t="footer.copy"></div>
   </footer>
 
   <script>
+    // ============================================================
+    // TRANSLATIONS
+    // ============================================================
+    const translations = {
+      es: {
+        'nav.videos': 'Videos',
+        'nav.shorts': 'Shorts',
+        'nav.streams': 'Streams',
+        'nav.contact': 'Contacto',
+
+        'hero.tag': 'Editor de Video · Redes Sociales',
+        'hero.title1': 'Tu contenido',
+        'hero.title2': 'elevado',
+        'hero.title3': 'al máximo.',
+        'hero.desc': 'Soy <strong>Tisi</strong>, editor profesional especializado en contenido para redes sociales. <strong>TikTok, Shorts y Reels</strong> con identidad visual que engancha desde el primer segundo. Tiempos de entrega <strong>ultra competitivos</strong> sin sacrificar calidad.',
+        'hero.cta1': 'Hablemos →',
+        'hero.cta2': 'Ver trabajos',
+        'hero.stat1': 'Entrega mínima',
+        'hero.stat2': 'Dedicación',
+        'hero.videoLabel': 'Video de presentación',
+        'hero.videoTitle': 'Porque trabajar conmigo :p',
+        'hero.videoBadge': 'Presentación',
+        'hero.scroll': 'Scroll',
+
+        'videos.label': 'Video Normal',
+        'videos.title': 'Videos que no paran.',
+        'videos.statement': 'No es magia.<br>Es edición que <span class="hl">no te deja salir.</span>',
+        'videos.desc': 'Hay videos que la gente cierra a los 30 segundos. Y hay videos que ven enteros sin darse cuenta. La diferencia no es el tema — es <strong>cómo está editado</strong>.<br><br>Trabajo cada corte para que el ritmo nunca decaiga. Que siempre haya algo pasando. Que el espectador no tenga un solo momento de aburrimiento donde decida irse. <em>Retención alta = algoritmo feliz = más plata para vos.</em>',
+        'videos.p1title': 'Ritmo que engancha',
+        'videos.p1text': 'Cada corte tiene un propósito. El silencio dura lo justo. Las transiciones fluyen. Nada sobra, nada falta.',
+        'videos.p2title': 'Efectos que amplifican',
+        'videos.p2text': 'Zooms, SFX — no como adorno sino como herramienta para darle peso a cada momento.',
+        'videos.p3title': 'Retención real',
+        'videos.p3text': 'El algoritmo premia a los que retienen. Edito pensando en que la gente llegue al final — siempre.',
+        'videos.noteTitle': 'Tres estilos. Un mismo objetivo.',
+        'videos.noteText': 'Tres ejemplos de video normal editado: un video de <strong style="color:var(--text)">Roblox</strong> con narrativa sólida y efectos bien medidos, un hook estilo <strong style="color:var(--text)">Minecraft Challenge</strong> cargado de motion graphics y dinamismo visual, y un video más clásico con el mismo nivel de cuidado en cada corte. Distintos formatos, misma obsesión por que nadie apague la pantalla.',
+        'videos.robloxLabel': 'Video Normal — Roblox',
+        'videos.robloxBadge': 'Destacado',
+        'videos.mcLabel': 'Hook — Minecraft Challenge',
+        'videos.mcBadge': 'Nuevo',
+        'videos.classicLabel': 'Video Normal editado',
+        'videos.classicBadge': 'Ejemplo',
+
+        'tag.narrative': 'Narrativa Fluida',
+        'tag.colorGrading': 'Color Grading',
+        'tag.subtitles': 'Subtítulos',
+        'tag.rhythm': 'Ritmo Preciso',
+        'tag.hook': 'Hook Potente',
+        'tag.noDropRhythm': 'Sin perder ritmo',
+        'tag.retention': 'Retención Alta',
+
+        'shorts.label': 'Portafolio',
+        'shorts.title': 'TikToks / Shorts / Reels',
+
+        'streams.label': 'Video Largo',
+        'streams.title': 'Resúmenes de Streams',
+        'streams.badge': 'Resumen Completo · 9hs → 1hs',
+        'streams.streamTitle': 'De 9 horas de stream a 1 hora de video',
+        'streams.desc': 'Esto no es un compilado de momentos sueltos. Es un <strong style="color:var(--text)">resumen narrativo completo</strong>: tomo 9 horas de stream y las convierto en 1 hora de video que se ve de corrido, con principio, desarrollo y cierre.<br><br>Cada corte tiene sentido. El ritmo no decae. Y encima va cargado de zooms, efectos de sonido y subtítulos que le dan vida a cada momento.',
+        'streams.tag1': 'Resumen Narrativo',
+        'streams.tag2': 'Zooms & SFX',
+
+        'contact.label': 'Contacto',
+        'contact.title': 'Trabajemos juntos',
+        'contact.aboutText': 'No manejo precios fijos. Cada proyecto es diferente, y prefiero que el precio <em>se adapte a lo que vos necesitás</em>, no al revés.<br><br>Ya sea un video único, un pack mensual, o algo completamente personalizado — <strong>lo hablamos y llegamos a algo que funcione para los dos.</strong><br><br>Lo que sí garantizo: <em>tiempos de entrega rápidos</em>, comunicación fluida, y un resultado que realmente le sirva a tu canal o marca.',
+        'contact.pricingTitle': '¿Qué ofrezco?',
+        'contact.pricingSub': 'El precio varía según el proyecto, la cantidad y la frecuencia. Escribime y te hago un presupuesto a medida.',
+        'contact.pricingItems': [
+          'TikToks, Shorts y Reels editados profesionalmente',
+          'Videos normales con retención alta y ritmo preciso',
+          'Resúmenes y highlights de streams',
+          'Edición con efectos, transiciones y color grading',
+          'Entregas en 24–72 hs según el formato',
+          'Revisiones incluidas hasta que quede perfecto'
+        ],
+
+        'footer.copy': '© 2026 Tisi — Editor de Video para Redes Sociales',
+      },
+
+      en: {
+        'nav.videos': 'Videos',
+        'nav.shorts': 'Shorts',
+        'nav.streams': 'Streams',
+        'nav.contact': 'Contact',
+
+        'hero.tag': 'Video Editor · Social Media',
+        'hero.title1': 'Your content',
+        'hero.title2': 'elevated',
+        'hero.title3': 'to the max.',
+        'hero.desc': 'I\'m <strong>Tisi</strong>, a professional editor specialized in social media content. <strong>TikTok, Shorts & Reels</strong> with visual identity that hooks from the very first second. <strong>Ultra-fast delivery</strong> without sacrificing quality.',
+        'hero.cta1': "Let's talk →",
+        'hero.cta2': 'See my work',
+        'hero.stat1': 'Min. delivery',
+        'hero.stat2': 'Dedication',
+        'hero.videoLabel': 'Intro video',
+        'hero.videoTitle': 'Why work with me :p',
+        'hero.videoBadge': 'Intro',
+        'hero.scroll': 'Scroll',
+
+        'videos.label': 'Regular Video',
+        'videos.title': 'Videos that keep playing.',
+        'videos.statement': 'Not magic.<br>Just editing that <span class="hl">won\'t let you leave.</span>',
+        'videos.desc': 'Some videos people close after 30 seconds. Others they watch all the way through without even realizing it. The difference isn\'t the topic — it\'s <strong>how it\'s edited</strong>.<br><br>I craft every cut so the pace never drops. There\'s always something happening. The viewer never has a single moment of boredom to decide to leave. <em>High retention = happy algorithm = more money for you.</em>',
+        'videos.p1title': 'Rhythm that hooks',
+        'videos.p1text': 'Every cut has a purpose. Silence lasts just the right amount. Transitions flow. Nothing wasted, nothing missing.',
+        'videos.p2title': 'Effects that amplify',
+        'videos.p2text': 'Zooms, SFX — not as decoration but as a tool to give weight to every moment.',
+        'videos.p3title': 'Real retention',
+        'videos.p3text': 'The algorithm rewards those who retain viewers. I edit with the goal of people reaching the end — always.',
+        'videos.noteTitle': 'Three styles. One goal.',
+        'videos.noteText': 'Three examples of edited regular videos: a <strong style="color:var(--text)">Roblox</strong> video with solid narrative and well-measured effects, a <strong style="color:var(--text)">Minecraft Challenge</strong>-style hook loaded with motion graphics and visual dynamism, and a more classic video with the same level of care in every cut. Different formats, same obsession with keeping viewers watching.',
+        'videos.robloxLabel': 'Regular Video — Roblox',
+        'videos.robloxBadge': 'Featured',
+        'videos.mcLabel': 'Hook — Minecraft Challenge',
+        'videos.mcBadge': 'New',
+        'videos.classicLabel': 'Edited regular video',
+        'videos.classicBadge': 'Example',
+
+        'tag.narrative': 'Fluid Narrative',
+        'tag.colorGrading': 'Color Grading',
+        'tag.subtitles': 'Subtitles',
+        'tag.rhythm': 'Precise Rhythm',
+        'tag.hook': 'Strong Hook',
+        'tag.noDropRhythm': 'Non-stop rhythm',
+        'tag.retention': 'High Retention',
+
+        'shorts.label': 'Portfolio',
+        'shorts.title': 'TikToks / Shorts / Reels',
+
+        'streams.label': 'Long Video',
+        'streams.title': 'Stream Highlights',
+        'streams.badge': 'Full Summary · 9hrs → 1hr',
+        'streams.streamTitle': 'From 9 hours of stream to 1 hour of video',
+        'streams.desc': 'This isn\'t a random clip compilation. It\'s a <strong style="color:var(--text)">complete narrative summary</strong>: I take 9 hours of stream and turn them into 1 hour of video you can watch straight through, with a beginning, middle, and end.<br><br>Every cut makes sense. The pace never drops. And on top of that it\'s loaded with zooms, sound effects, and subtitles that bring life to every moment.',
+        'streams.tag1': 'Narrative Summary',
+        'streams.tag2': 'Zooms & SFX',
+
+        'contact.label': 'Contact',
+        'contact.title': "Let's work together",
+        'contact.aboutText': 'I don\'t work with fixed prices. Every project is different, and I prefer the price to <em>adapt to what you need</em>, not the other way around.<br><br>Whether it\'s a single video, a monthly package, or something fully custom — <strong>we talk it through and find something that works for both of us.</strong><br><br>What I do guarantee: <em>fast delivery times</em>, smooth communication, and a result that genuinely serves your channel or brand.',
+        'contact.pricingTitle': 'What I offer',
+        'contact.pricingSub': 'Price varies by project, quantity, and frequency. Message me and I\'ll put together a custom quote.',
+        'contact.pricingItems': [
+          'TikToks, Shorts and Reels edited professionally',
+          'Regular videos with high retention and precise pacing',
+          'Stream summaries and highlights',
+          'Editing with effects, transitions and color grading',
+          'Delivery in 24–72 hrs depending on the format',
+          'Revisions included until it\'s perfect'
+        ],
+
+        'footer.copy': '© 2026 Tisi — Video Editor for Social Media',
+      }
+    };
+
+    // ============================================================
+    // I18N ENGINE
+    // ============================================================
+    let currentLang = 'en';
+
+    function t(key) {
+      return translations[currentLang][key] || translations['es'][key] || key;
+    }
+
+    function applyTranslations() {
+      // text nodes
+      document.querySelectorAll('[data-t]').forEach(el => {
+        el.textContent = t(el.dataset.t);
+      });
+      // html nodes (rich text)
+      document.querySelectorAll('[data-t-html]').forEach(el => {
+        el.innerHTML = t(el.dataset.tHtml);
+      });
+      // pricing list
+      const list = document.getElementById('pricingList');
+      if (list) {
+        const items = translations[currentLang]['contact.pricingItems'] || [];
+        list.innerHTML = items.map(item => `<li>${item}</li>`).join('');
+      }
+      // lang buttons active state
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === currentLang);
+      });
+      // html lang attr
+      document.documentElement.lang = currentLang;
+    }
+
+    function switchLang(lang) {
+      if (lang === currentLang) return;
+      currentLang = lang;
+      document.body.classList.add('lang-switching');
+      setTimeout(() => {
+        applyTranslations();
+        document.body.classList.remove('lang-switching');
+      }, 150);
+    }
+
+    // attach lang buttons
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => switchLang(btn.dataset.lang));
+    });
+
+    // initial render
+    applyTranslations();
+
+    // ============================================================
     // SHORTS
+    // ============================================================
     const shorts = [
       { url: 'https://youtube.com/shorts/AaBCVAlUIRM', title: 'Short #1' },
       { url: 'https://youtube.com/shorts/7GjTjtXQt-4', title: 'Short #2' },
@@ -1143,15 +1296,15 @@
           ? `<img class="short-thumb" src="${thumb}" alt="${title}" loading="lazy">`
           : `<div style="width:100%;height:100%;background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.75rem;">Sin preview</div>`
         }
-        <div class="card-overlay">
-          <div class="card-title">${title}</div>
-        </div>
+        <div class="card-overlay"><div class="card-title">${title}</div></div>
         <a href="${url}" target="_blank" class="card-link" aria-label="${title}"></a>
       `;
       grid.appendChild(card);
     });
 
+    // ============================================================
     // HAMBURGER MENU
+    // ============================================================
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
     hamburger.addEventListener('click', () => {
@@ -1167,7 +1320,9 @@
       });
     });
 
+    // ============================================================
     // FADE UP ON SCROLL
+    // ============================================================
     const fadeEls = document.querySelectorAll('.fade-up');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
