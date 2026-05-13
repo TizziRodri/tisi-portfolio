@@ -111,9 +111,7 @@
     }
     .nav-mobile-menu a:hover { color: var(--accent); }
 
-    /* ============================================================
-       HERO
-    ============================================================ */
+    /* HERO */
     #hero {
       min-height: 100vh;
       display: flex;
@@ -379,9 +377,7 @@
       margin-bottom: 64px;
     }
 
-    /* ============================================================
-       VIDEOS NORMALES — ahora PRIMERO
-    ============================================================ */
+    /* VIDEOS NORMALES */
     #videos-normales { background: var(--bg); }
 
     .vnormal-top {
@@ -438,7 +434,6 @@
     }
     .pillar-text { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
 
-    /* Placeholder filler columna derecha en el bloque de texto */
     .vnormal-top-right {
       display: flex;
       flex-direction: column;
@@ -464,11 +459,11 @@
       line-height: 1.7;
     }
 
-    /* Grid de 2 videos side by side */
+    /* Grid de 3 videos — ahora 3 columnas */
     .vnormal-videos-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 32px;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 28px;
     }
 
     .vnormal-video-col {
@@ -513,6 +508,11 @@
       border-color: rgba(200,255,0,0.25);
       color: var(--accent);
       background: rgba(200,255,0,0.05);
+    }
+    .vnormal-caption-badge.orange {
+      border-color: rgba(255,107,53,0.35);
+      color: var(--accent2);
+      background: rgba(255,107,53,0.06);
     }
 
     .vnormal-video-label-text {
@@ -721,13 +721,12 @@
     /* DIVIDER */
     .divider { width: 100%; height: 1px; background: var(--border); margin: 0; }
 
-    /* ============================================================
-       RESPONSIVE
-    ============================================================ */
+    /* RESPONSIVE */
     @media (max-width: 1024px) {
       .hero-title { font-size: clamp(2.8rem, 5vw, 5rem); }
       .shorts-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
       .stream-feature { gap: 40px; }
+      .vnormal-videos-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
     }
 
     @media (max-width: 768px) {
@@ -878,14 +877,11 @@
 
   <div class="divider"></div>
 
-  <!-- ============================================================
-       1. VIDEOS NORMALES — PRIMERO
-  ============================================================ -->
+  <!-- VIDEOS NORMALES -->
   <section id="videos-normales">
     <div class="section-label">Video Normal</div>
     <h2 class="section-title fade-up">Videos que no paran.</h2>
 
-    <!-- Texto explicativo + nota -->
     <div class="vnormal-top fade-up">
       <div>
         <p class="vnormal-statement">
@@ -926,22 +922,43 @@
 
       <div class="vnormal-top-right">
         <div class="vnormal-top-note">
-          <div class="vnormal-top-note-title">Dos estilos. Un mismo objetivo.</div>
-          <p>Abajo podés ver dos ejemplos de video normal editado: un hook estilo <strong style="color:var(--text)">Minecraft Challenge</strong> cargado de motion graphics y dinamismo visual, y un video más clásico con el mismo nivel de cuidado en cada corte. Distintos formatos, misma obsesión por que nadie apague la pantalla.</p>
+          <div class="vnormal-top-note-title">Tres estilos. Un mismo objetivo.</div>
+          <p>Tres ejemplos de video normal editado: un video de <strong style="color:var(--text)">Roblox</strong> con narrativa sólida y efectos bien medidos, un hook estilo <strong style="color:var(--text)">Minecraft Challenge</strong> cargado de motion graphics y dinamismo visual, y un video más clásico con el mismo nivel de cuidado en cada corte. Distintos formatos, misma obsesión por que nadie apague la pantalla.</p>
         </div>
       </div>
     </div>
 
-    <!-- Dos videos side by side -->
+    <!-- Tres videos -->
     <div class="vnormal-videos-grid fade-up">
 
-      <!-- Video izquierdo: Minecraft Challenge Hook -->
+      <!-- Video 1: Roblox — NUEVO, va primero -->
       <div class="vnormal-video-col">
         <div class="vnormal-video">
-          <!--
-            Reemplazá con el ID del video hook de Minecraft Challenge.
-            Ejemplo: src="https://www.youtube.com/embed/TU_ID_AQUI?rel=0&modestbranding=1"
-          -->
+          <iframe
+            src="https://www.youtube.com/embed/Un_J5oLxTvo?rel=0&modestbranding=1"
+            title="Video Normal Roblox"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="vnormal-video-info">
+          <div class="vnormal-video-header">
+            <div class="vnormal-video-label-text">Video Normal — Roblox</div>
+            <div class="vnormal-caption-badge orange">Destacado</div>
+          </div>
+          <div class="stream-tags">
+            <span class="tag">Narrativa Fluida</span>
+            <span class="tag">Color Grading</span>
+            <span class="tag">SFX</span>
+            <span class="tag">Subtítulos</span>
+            <span class="tag">Ritmo Preciso</span>
+            <span class="tag">Zooms</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video 2: Minecraft Challenge Hook -->
+      <div class="vnormal-video-col">
+        <div class="vnormal-video">
           <iframe
             src="https://www.youtube.com/embed/oHHBYsiIqSQ?rel=0&modestbranding=1"
             title="Hook Minecraft Challenge"
@@ -963,7 +980,7 @@
         </div>
       </div>
 
-      <!-- Video derecho: Video Normal clásico -->
+      <!-- Video 3: Video Normal clásico -->
       <div class="vnormal-video-col">
         <div class="vnormal-video">
           <iframe
@@ -992,9 +1009,7 @@
 
   <div class="divider"></div>
 
-  <!-- ============================================================
-       2. SHORTS — EN EL MEDIO
-  ============================================================ -->
+  <!-- SHORTS -->
   <section id="shorts">
     <div class="section-label">Portafolio</div>
     <h2 class="section-title fade-up">TikToks / Shorts / Reels</h2>
@@ -1003,9 +1018,7 @@
 
   <div class="divider"></div>
 
-  <!-- ============================================================
-       3. STREAMS — AL FINAL
-  ============================================================ -->
+  <!-- STREAMS -->
   <section id="streams">
     <div class="section-label">Video Largo</div>
     <h2 class="section-title fade-up">Resúmenes de Streams</h2>
